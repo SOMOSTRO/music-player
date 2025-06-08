@@ -1,17 +1,17 @@
 const CACHE_NAME = 'music-player-v1';
-const OFFLINE_PAGE = '/index.html'; // Fallback page
+const OFFLINE_PAGE = 'index.html'; // Fallback page
 const ESSENTIAL_FILES = [
   '/',
-  '/index.html',
-  '/manifest.json',
-  '/images/icon-192x192.png',
-  '/images/icon-512x512.png',
-  '/images/dark.jpg',
-  '/images/white.jpeg',
-  '/images/moon.jpg',
-  '/images/sun.png',
-  '/src/style.css',
-  '/src/script.js',
+  'index.html',
+  'manifest.json',
+  'images/icon-192x192.png',
+  'images/icon-512x512.png',
+  'images/dark.jpg',
+  'images/white.jpeg',
+  'images/moon.jpg',
+  'images/sun.png',
+  'style.css',
+  'script.js',
   'bundle.js',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap'
   //'https://cdn.jsdelivr.net/npm/eruda'
