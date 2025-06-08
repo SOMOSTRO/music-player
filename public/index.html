@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <link rel="icon" href="./images/icon-192x192.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="/src/style.css">
+    
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" />
+    
+    <link rel="preload" as="image" href="./images/moon.jpg">
+    
+    <meta name="theme-color" content="">
+    
+    <!-- Open Graph (Facebook, WhatsApp, etc.) -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Music Player">
+    <meta property="og:description" content="Install Music Player PWA">
+    <meta property="og:image" content="./images/icon-512x512.png">
+    <meta property="og:url" content="http://192.168.1.6:3000/">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="apple-mobile-web-app-title" content="Music Player">
+    <link rel="apple-touch-icon" href="./images/icon-192x192.png">
+    
+    <!-- SEO -->
+    <meta name="description" content="A lightweight, stylish, and open-source PWA music player with categorized songs. Locally hosted for fast, offline-friendly access and a smooth user experience.">
+    <meta name="keywords" content="music player, pwa, audio, streaming, offline music">
+    <meta name="author" content="_">
+    
+    <title>Music Player</title>
+    
+  <style>
+    /* General Styles */
+    html {
+      height: 100vh;
+      width: 100vw;
+    }
+    body {
+      height: 100%;
+      width: 100%;
+    }
+  </style>
+  
+    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      try {
+        eruda.init();
+        console.log("Eruda Activated");
+      }
+      catch (error) {
+        console.log("Eruda is unavailable");
+      }
+    </script>
+</head>
+<body>
+    <!-- Music Player Section -->
+    <div class="header">
+        <button id="theme-toggle"></button>
+        <h2>Music Player</h2>
+        <button class="material-symbols-outlined menu-btn" onclick="handleMenuClick()">menu</button>
+    </div>
+    
+    <div class="menu_container">
+    </div>
+    
+    <div class="menu_inner_container">
+      <header class="menu_inner_header">
+        <button class="material-symbols-outlined close-btn" onclick="handleMenuClick()">close
+        </button>
+      </header>
+      <section class="menu_inner_content">
+        <hr>
+        
+        <div class="api_base_container menu_content_containers">
+          <h4>Server URL (API Base)</h4>
+          <p>Enter server URL of songs API</p>
+          <p>API BASE: <input id="api_base_input" type="text" inputmode="text" enterkeyhint="done" placeholder="Enter api base">
+          </p>
+        </div>
+        <hr>
+        
+        <div class="storage_container menu_content_containers">
+          <h4>Storage Details</h4>
+          <ul>
+            <li>Available Storage: <span id="storageAvailable">Unavailable</span></li>
+            <li>Storage Used: <span id="storageUsed">Unavailable</span></li>
+            <li>Percentage Used: <span id="storagePercentUsed">Unavailable</span></li>
+          </ul>
+          <!--  
+          <span class="storage_warning_element"></span> 
+          -->
+        </div>
+        <hr>
+        
+        <div class="server_request_container menu_content_containers">
+          <h4>Server Request (count)</h4>
+          <ul>
+            <li>No of Logins: <span id="loginsElement">Loading...</span></li>
+            <li>Song Requests: <span id="songRequestsElement">Loading...</span></li>
+          </ul>
+        </div>
+        <hr>
+        
+        <div class="songs_information_container menu_content_containers">
+          <h4>Songs Information (count)</h4>
+          <ul>
+            <li>English Songs: <span id="englishSongsElement">0</span></li>
+            <li>Hindi Songs: <span id="hindiSongsElement">0</span></li>
+            <li>Malayalam Songs: <span id="malayalamSongsElement">0</span></li>
+            <li>Phonk Songs: <span id="phonkSongsElement">0</span></li>
+            <li>Total Songs: <span id="totalSongsElement">0</span></li>
+          </ul>
+        </div>
+        <hr>
+      </section>
+      <footer class="menu_inner_footer">
+        <a href="https://github.com/SOMOSTRO" class="github_logo">
+          <img src="/images/github_logo.png" alt="Github_logo">
+        </a>
+        <span class="dev_name">SOMOSTRO</span>
+      </footer>
+    </div>
+    
+    <div class="menu_close_layer"></div>
+    
+    <div id="intro">
+      <img src="./images/icon-192x192.png" alt="Music Player" height="100" width="100">
+      
+      <ul>
+        <li>Free to Listen</li>
+        <li>High-Quality Audio</li>
+        <li>More than 500 songs in total</li>
+      </ul>
+      
+      <span>Click anywhere to continue...</span>
+    </div>
+
+    <!-- Songs Section -->
+    <div id="root">
+
+    </div>
+
+    <div class="connection_status">
+      <button onclick="closeConnectionStatus()">X</button>
+        <h2>Faild to Connect to Server!</h2>
+        <p>You're offline. The app can't connect to the server right now.</p>
+        <dl>
+         <h4>Reason:</h4>
+          <dt>
+            •The app is hosted on a local server:
+          </dt>
+          <dd>You need to be connected to the specific WiFi network where the server is running to access it.
+            </dd>
+          
+          <dt>
+            •The server might not be active:
+          </dt>
+          <dd>If the server isn't running, the app won't be able to connect.
+          </dd>
+         
+         <h4>Solution:</h4>
+          <dt>
+            •Connect to the correct WiFi network:
+          </dt>
+          <dd>Make sure you're connected to the same network as the server.
+          </dd>
+          
+          <dt>
+            •Check if the server is running:
+          </dt>
+          <dd>Ensure the server is active and accessible.
+          </dd>
+        </dl>
+      </div>
+
+    
+<script src="bundle.js"></script>
+    
+<script src="/src/script.js"></script>
+
+</body>
+</html>
