@@ -49,12 +49,12 @@ if(!isStorageAccessible)
   console.warn("Failed to access browser storage, cannot calculate available storage space.");
 
 if(isDarkMode) {
-  themeToggle.innerHTML = "<img src=./images/sun.png width=28 style='border-radius:50%'>";
+  themeToggle.innerHTML = "<img src=images/sun.png width=28 style='border-radius:50%'>";
   document.body.classList.add('dark');
   themeMetatag.content = "#1b0832";
 }
 else {
-  themeToggle.innerHTML = "<img src=./images/moon.jpg width=28 style='border-radius:50%'>";
+  themeToggle.innerHTML = "<img src=images/moon.jpg width=28 style='border-radius:50%'>";
   themeMetatag.content = "#041d44";
 }
 
@@ -65,11 +65,11 @@ document.querySelector("#theme-toggle img").style.animationPlayState = 'paused';
 themeToggle.onclick = () => {
   if (document.body.classList.contains('dark')) {
     document.body.classList.remove('dark');
-    themeToggle.innerHTML = "<img src=./images/moon.jpg width=28 style='border-radius:50%'>";
+    themeToggle.innerHTML = "<img src=images/moon.jpg width=28 style='border-radius:50%'>";
     themeMetatag.content = "#041d44";
   } else {
     document.body.classList.add('dark');
-    themeToggle.innerHTML = "<img src=./images/sun.png width=28 style='border-radius:50%'>";
+    themeToggle.innerHTML = "<img src=images/sun.png width=28 style='border-radius:50%'>";
     themeMetatag.content = "#1b0832";
   }
 };
@@ -200,7 +200,7 @@ function preloadImages(urls) {
 }
  
 // preloadImages 
-const imageUrls = ['./images/white.jpeg', './images/dark.jpg', './images/moon.jpg', './images/sun.png', './images/icon-192x192.png'];
+const imageUrls = ['images/white.jpeg', 'images/dark.jpg', 'images/moon.jpg', 'images/sun.png', 'images/icon-192x192.png'];
 preloadImages(imageUrls)
 
 
