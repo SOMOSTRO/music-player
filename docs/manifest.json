@@ -1,0 +1,34 @@
+{
+  "short_name": "Music Player",
+  "name": "Music Player React App",
+  "description": "A high-quality music player with over 500+ songs, offering an immersive audio experience with playlists, themes, and more.",
+  "icons": [
+    {
+      "src": "./images/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "./images/icon-512x512.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "./images/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "1080x1920"
+    },
+    {
+      "src": "./images/icon-192x192.png",
+      "type": "image/png",
+      "sizes": "1080x1920"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#000000",
+  "display": "standalone",
+  "scope": "/",
+  "theme_color": "#000000"
+}
