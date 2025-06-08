@@ -1,18 +1,18 @@
 const CACHE_NAME = 'music-player-v1';
-const OFFLINE_PAGE = 'index.html'; // Fallback page
+const OFFLINE_PAGE = 'https://SOMOSTRO.github.io/music-player/index.html'; // Fallback page
 const ESSENTIAL_FILES = [
-  '/',
-  'index.html',
-  'manifest.json',
-  'images/icon-192x192.png',
-  'images/icon-512x512.png',
-  'images/dark.jpg',
-  'images/white.jpeg',
-  'images/moon.jpg',
-  'images/sun.png',
-  'style.css',
-  'script.js',
-  'bundle.js',
+  'https://SOMOSTRO.github.io/music-player/',
+  'https://SOMOSTRO.github.io/music-player/index.html',
+  'https://SOMOSTRO.github.io/music-player/manifest.json',
+  'https://SOMOSTRO.github.io/music-player/images/icon-192x192.png',
+  'https://SOMOSTRO.github.io/music-player/images/icon-512x512.png',
+  'https://SOMOSTRO.github.io/music-player/images/dark.jpg',
+  'https://SOMOSTRO.github.io/music-player/images/white.jpeg',
+  'https://SOMOSTRO.github.io/music-player/images/moon.jpg',
+  'https://SOMOSTRO.github.io/music-player/images/sun.png',
+  'https://SOMOSTRO.github.io/music-player/style.css',
+  'https://SOMOSTRO.github.io/music-player/script.js',
+  'https://SOMOSTRO.github.io/music-player/bundle.js',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap'
   //'https://cdn.jsdelivr.net/npm/eruda'
 ];
