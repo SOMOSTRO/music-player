@@ -26,9 +26,9 @@
       "sizes": "1080x1920"
     }
   ],
-  "start_url": "https://SOMOSTRO.github.io/music-player/",
+  "start_url": "https://SOMOSTRO.github.io/music-player/index.html",
   "background_color": "#000000",
   "display": "standalone",
-  "scope": "https://SOMOSTRO.github.io/music-player/",
+  "scope": "https://SOMOSTRO.github.io/music-player/index.html",
   "theme_color": "#000000"
 }
