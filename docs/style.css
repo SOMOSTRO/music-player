@@ -318,6 +318,7 @@ body.dark .header {
 }
 .github_logo img {
   height: 70%;
+  border: .5px solid white;
   border-radius: 50%;
 }
 .dev_name {
