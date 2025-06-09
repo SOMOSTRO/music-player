@@ -18,7 +18,7 @@ const ESSENTIAL_FILES = [
   //'https://cdn.jsdelivr.net/npm/eruda'
 ];
 
-console.log("Service Worker Updated");
+console.log("Service Worker Updated.");
 
 // Install the service worker and cache essential files
 self.addEventListener('install', (event) => {
