@@ -10,6 +10,7 @@ const ESSENTIAL_FILES = [
   'https://SOMOSTRO.github.io/music-player/images/white.jpeg',
   'https://SOMOSTRO.github.io/music-player/images/moon.jpg',
   'https://SOMOSTRO.github.io/music-player/images/sun.png',
+  'https://SOMOSTRO.github.io/music-player/images/github_logo.png',
   'https://SOMOSTRO.github.io/music-player/style.css',
   'https://SOMOSTRO.github.io/music-player/script.js',
   'https://SOMOSTRO.github.io/music-player/bundle.js',
