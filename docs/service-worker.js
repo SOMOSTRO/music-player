@@ -1,4 +1,4 @@
-const CACHE_NAME = 'music-player-v1';
+const CACHE_NAME = 'music-player-v_1.1.1';
 const OFFLINE_PAGE = 'https://SOMOSTRO.github.io/music-player/index.html'; // Fallback page
 const ESSENTIAL_FILES = [
   'https://SOMOSTRO.github.io/music-player/',
@@ -15,10 +15,9 @@ const ESSENTIAL_FILES = [
   'https://SOMOSTRO.github.io/music-player/script.js',
   'https://SOMOSTRO.github.io/music-player/bundle.js',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap'
-  //'https://cdn.jsdelivr.net/npm/eruda'
 ];
 
-console.log("Service Worker Updated.");
+console.log("Service Worker Updated");
 
 // Install the service worker and cache essential files
 self.addEventListener('install', (event) => {
