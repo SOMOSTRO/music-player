@@ -1,0 +1,14 @@
+# Ignore production build output
+dist/
+
+# Ignore update logs
+update_logs.txt
+
+# Ignore temporary files from text editors or IDEs
+*.log
+*.tmp
+*.swp
+*.bak
+
+# Node-specific
+node_modules/
