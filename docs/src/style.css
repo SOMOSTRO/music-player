@@ -91,7 +91,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-image: url('./images/white.jpeg');
+  background-image: url('../images/white.jpeg');
   background-color: black;
   background-size: cover;
   transition: all .5s ease, background-image .7s ease .3s;
@@ -340,7 +340,7 @@ body.dark .header {
 
 /* Dark Mode */
 body.dark {
-  background-image: url('./images/dark.jpg');
+  background-image: url('../images/dark.jpg');
   background-color: black;
   color: #f4f4f9;
 }
