@@ -12,7 +12,7 @@ import {
   getFavourite
 } from "./indexedDB";
 
-const API_BASE = window.location.hostname === "localhost" ? "http://127.0.0.1:5000" : localStorage.getItem("API_BASE") || "http://192.168.1.6:5000";
+const API_BASE = window.location.hostname === "localhost" ? "http://127.0.0.1:5000" : window.API_BASE;
 
 const bodyElement = document.querySelector("body");
 // audio player event listener var
@@ -37,7 +37,7 @@ const App = () => {
   
   
   // references
-  const isServerActive = useRef(false);
+  const isServerActive = useRef(null);
   
   const hasRefreshedFavourites = useRef(false);
   
@@ -58,15 +58,14 @@ const App = () => {
       .then((data) => {
         setAllSongs(data);
         setFilteredSongs(Object.values(data).flat());
-        window.isServerActive = true;
         isServerActive.current = true;
+        window.scriptProperties?.closeIntro?.(true);
         getSongsCount(data);
       })
       .catch((error) => {
-        console.error("Error fetching songs:", error)
-        //setSelectedCategory("Favourite");
-        //filterSongs("Favourite");
-        
+        console.error("Error fetching songs")
+        isServerActive.current = false;
+        window.scriptProperties?.closeIntro?.(false);
       });
       
       // indexedDB setup
@@ -79,7 +78,7 @@ const App = () => {
   // re-render Virtualized List
   useEffect(() => {
     if(!hasRefreshedFavourites.current && favouriteSongs.length > 0) {
-      if(!isServerActive.current) {
+      if(!isServerActive.current && isServerActive.current != null) {
         requestAnimationFrame(() => {
           filterSongs("Favourite")
           //listRef.current?.recomputeRowHeights();

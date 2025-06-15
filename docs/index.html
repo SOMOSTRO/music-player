@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
-    <link rel="icon" href="images/icon-192x192.png" type="image/png">
-    <link rel="manifest" href="manifest.json">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./images/icon-192x192.png" type="image/png">
+    <link rel="manifest" href="/manifest.json">
+    <link rel="stylesheet" href="./src/style.css">
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" />
     
-    <link rel="preload" as="image" href="images/moon.jpg">
+    <link rel="preload" as="image" href="./images/moon.jpg">
     
     <meta name="theme-color" content="">
     
@@ -23,12 +23,12 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black">
     <meta name="apple-mobile-web-app-title" content="Music Player">
-    <link rel="apple-touch-icon" href="images/icon-192x192.png">
+    <link rel="apple-touch-icon" href="./images/icon-192x192.png">
     
     <!-- SEO -->
     <meta name="description" content="A lightweight, stylish, and open-source PWA music player with categorized songs. Locally hosted for fast, offline-friendly access and a smooth user experience.">
     <meta name="keywords" content="music player, pwa, audio, streaming, offline music">
-    <meta name="author" content="_">
+    <meta name="author" content="SOMOSTRO">
     
     <title>Music Player</title>
     
@@ -44,8 +44,34 @@
     }
   </style>
   
-    <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-    <script>
+  <!-- Server URL Fetching Logic -->
+  <script>
+    const savedURL = localStorage.getItem("API_BASE") || '';
+    if(window.location.hostname === "localhost") {
+      window.API_BASE = "http://127.0.0.1:5000";
+    } else if (savedURL) {
+      window.API_BASE = savedURL;
+    } else {
+      fetch("https://SOMOSTRO.github.io/music-player/server.json")
+        .then(res => res.json())
+        .then(data => {
+          window.API_BASE = data.url;
+          localStorage.setItem("API_BASE", data.url);
+        })
+        .catch(err => {
+          window.API_BASE = '';
+          console.warn("Failed to fetch API_BASE", err);
+        });
+    }
+  </script>
+  
+  <!-- Initializing Eruda Logic -->
+  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+  <script>
+    // intialize eruda if allowed
+    let isErudaActivated = false;
+    
+    if(localStorage.getItem('isErudaActivated') || false) {
       try {
         eruda.init();
         console.log("Eruda Activated");
@@ -53,7 +79,10 @@
       catch (error) {
         console.log("Eruda is unavailable");
       }
-    </script>
+      
+      isErudaActivated = true;
+    }
+  </script>
 </head>
 <body>
     <!-- Music Player Section -->
@@ -118,7 +147,7 @@
       </section>
       <footer class="menu_inner_footer">
         <a href="https://github.com/SOMOSTRO" class="github_logo">
-          <img src="images/github_logo.png" alt="Github_logo">
+          <img src="./images/github_logo.png" alt="Github_logo">
         </a>
         <span class="dev_name">SOMOSTRO</span>
       </footer>
@@ -127,15 +156,15 @@
     <div class="menu_close_layer"></div>
     
     <div id="intro">
-      <img src="./images/icon-192x192.png" alt="Music Player" height="100" width="100">
+      <img src="./images/icon-512x512.png" alt="Music Player Logo">
       
       <ul>
-        <li>Free to Listen</li>
+        <li>Open Source</li>
         <li>High-Quality Audio</li>
-        <li>More than 500 songs in total</li>
+        <li>Powered by 800+ songs</li>
       </ul>
       
-      <span>Click anywhere to continue...</span>
+      <span>Loading...</span>
     </div>
 
     <!-- Songs Section -->
@@ -179,7 +208,7 @@
     
 <script src="bundle.js"></script>
     
-<script src="script.js"></script>
+<script src="./src/script.js"></script>
 
 </body>
 </html>

@@ -29,17 +29,15 @@ const songRequestsElement = document.getElementById('songRequestsElement');
 
 // Intro var
 let intro = document.getElementById("intro");
+let introLogo = document.querySelector("#intro img");
 
-window.isServerActive = false;
+let isServerActive = false;
 
 // connection_status var
 let connectionStatus = document.querySelector(".connection_status");
 
-// get localStorage for server API
-API_BASE = localStorage.getItem("API_BASE") || "http://192.168.1.6:5000";
-
-// set apiBaseInput value
-apiBaseInput.value = API_BASE;
+// set API_BASE = server URL
+const API_BASE = window.API_BASE || "";
 
 // check storage accessible
 const isStorageAccessible = navigator.storage && navigator.storage.estimate;
@@ -49,13 +47,11 @@ if(!isStorageAccessible)
   console.warn("Failed to access browser storage, cannot calculate available storage space.");
 
 if(isDarkMode) {
-  themeToggle.innerHTML = "<img src=images/sun.png width=28 style='border-radius:50%'>";
+  themeToggle.innerHTML = "<img src=./images/sun.png width=28 style='border-radius:50%'>";
   document.body.classList.add('dark');
-  themeMetatag.content = "#1b0832";
 }
 else {
-  themeToggle.innerHTML = "<img src=images/moon.jpg width=28 style='border-radius:50%'>";
-  themeMetatag.content = "#041d44";
+  themeToggle.innerHTML = "<img src=./images/moon.jpg width=28 style='border-radius:50%'>";
 }
 
 // pause all themeToggle animations
@@ -65,11 +61,11 @@ document.querySelector("#theme-toggle img").style.animationPlayState = 'paused';
 themeToggle.onclick = () => {
   if (document.body.classList.contains('dark')) {
     document.body.classList.remove('dark');
-    themeToggle.innerHTML = "<img src=images/moon.jpg width=28 style='border-radius:50%'>";
+    themeToggle.innerHTML = "<img src=./images/moon.jpg width=28 style='border-radius:50%'>";
     themeMetatag.content = "#041d44";
   } else {
     document.body.classList.add('dark');
-    themeToggle.innerHTML = "<img src=images/sun.png width=28 style='border-radius:50%'>";
+    themeToggle.innerHTML = "<img src=./images/sun.png width=28 style='border-radius:50%'>";
     themeMetatag.content = "#1b0832";
   }
 };
@@ -108,61 +104,64 @@ function handleMenuClick() {
   }
 }
 
-
 //Intro logic 
 window.addEventListener('load',function () {
   // Show Intro
-  intro.style.backgroundColor = '#000000b9';
-  setTimeout( () => {
-    intro.classList.add("active");
-  },1000);
-},{once: true});
-
-//Full screen Logic
-intro.addEventListener('click', function () {
-  // Handling isServerActive logic
-  const isDisplayedConnectionStatus = localStorage.getItem("isDisplayedConnectionStatus") || false
-  
-  if(!window.isServerActive) {
-    console.error("Failed to connect to server");
-    if(!isDisplayedConnectionStatus) {
-      connectionStatus.style.display = 'block';
-      localStorage.setItem("isDisplayedConnectionStatus", true);
-    } else {
-      connectionStatus.remove();
-    }
+  // The intro animation will skip when server is connected too fast.
+  if(introLogo) {
+    //intro.style.backgroundColor = '#000000b9';
+    introLogo.style.animation = 'logoAnm .6s ease .4s';
+    setTimeout( () => {
+      intro?.classList.add("active");
+    },1000);
   }
-  else {
-    connectionStatus.remove();
-    console.log("Server is Active");
-  }
-  
-  // continue animating themeToggle
-  themeToggle.style.animationPlayState = 'running';
-  document.querySelector("#theme-toggle img").style.animationPlayState = 'running';
-  
-  if(!isStandalone()) {
-    goFullScreen();
-    console.log('Running as a web app');
-  } else {
-    console.log('Running as a standalone app');
-  }
-  
-  
-  intro.classList.remove("active");
-  requestAnimationFrame( () => {
-    intro.classList.add("deactivate");
-  });
-  
-  setTimeout( () => {
-    intro.style.animation = 'hide 1s ease';
-  },500);
-  setTimeout( () => {
-    intro.style.display = 'none';
-    intro.remove();
-    intro = null;
-  },1500);
 }, {once: true});
+
+//window global function for intro
+window.scriptProperties = {
+  closeIntro: function (serverConnected) {
+    isServerActive = true;
+    const isDisplayedConnectionStatus = localStorage.getItem("isDisplayedConnectionStatus") || false
+    
+    // update theme-color for pwa
+    if(isDarkMode)
+      themeMetatag.content = "#1b0832";
+    else
+      themeMetatag.content = "#041d44";
+    
+    // Handling serverConnected logic
+    if(!serverConnected) {
+      console.error("Failed to connect to server, Please ensure the server is active and API_BASE is valid.");
+      if(!isDisplayedConnectionStatus) {
+        connectionStatus.style.display = 'block';
+        localStorage.setItem("isDisplayedConnectionStatus", true);
+      } else {
+        closeConnectionStatus()
+      }
+    }
+    else {
+      closeConnectionStatus()
+      console.log("Server is Active");
+    }
+    
+    // continue animating themeToggle
+    themeToggle.style.animationPlayState = 'running';
+    
+    if(!isStandalone()) {
+      console.log('Running as a web app');
+    } else {
+      console.log('Running as a standalone app');
+    }
+    
+    // close and clean-up intro
+    intro.style.animation = 'opacity .3s reverse';
+    introLogo = null;
+    setTimeout( () => {
+      intro.remove();
+      intro = null;
+    },300);
+  }
+};
 
 function closeConnectionStatus() {
   connectionStatus.remove();
@@ -179,18 +178,6 @@ function isStandalone() {
   );
 }
 
-function goFullScreen() {
-  if (document.documentElement.requestFullscreen) {
-      document.documentElement.requestFullscreen();
-  } else if (document.documentElement.mozRequestFullScreen) {
-      document.documentElement.mozRequestFullScreen();
-  } else if (document.documentElement.webkitRequestFullscreen) {
-      document.documentElement.webkitRequestFullscreen();
-  } else if (document.documentElement.msRequestFullscreen) {
-      document.documentElement.msRequestFullscreen();
-  }
-}
-
 // Preload images function
 function preloadImages(urls) {
  urls.forEach(url => {
@@ -200,17 +187,48 @@ function preloadImages(urls) {
 }
  
 // preloadImages 
-const imageUrls = ['images/white.jpeg', 'images/dark.jpg', 'images/moon.jpg', 'images/sun.png', 'images/icon-192x192.png'];
+const imageUrls = ['./images/white.jpeg', './images/dark.jpg', './images/moon.jpg', './images/sun.png', './images/icon-192x192.png'];
 preloadImages(imageUrls)
 
 
 // menu inner content functions
 // apiBaseInput function
 apiBaseInput.addEventListener('keydown', function(event) {
+  let inputValue = this.value.trim();
   if(event.key === 'Enter') {
-    if(this.value.length < 21)
-      return;
-    localStorage.setItem("API_BASE", this.value);
+    if(inputValue.includes('eruda')) {
+      if(isErudaActivated === true)
+        return
+      const script = document.createElement('script');
+      script.src = "https://cdn.jsdelivr.net/npm/eruda";
+      document.body.appendChild(script);
+      script.onload = function () {
+        try {
+          eruda.init();
+          console.log("Eruda Activated");
+        }
+        catch (error) {
+          console.log("Eruda is unavailable");
+        }
+      };
+      
+      this.value = this.value.replace(/eruda/i, '')
+      isErudaActivated = true;
+      localStorage.setItem('isErudaActivated', true)
+      return
+    }
+    
+    // if input empty reset API_BASE to fetch actual URL
+    if(!inputValue) {
+      localStorage.setItem("API_BASE", "");
+      location.reload();
+    }
+      
+    if(inputValue === API_BASE)
+      return 
+    
+    // set API_BASE if it's entered manually
+    localStorage.setItem("API_BASE", inputValue);
     location.reload();
   }
 });
@@ -264,21 +282,23 @@ function fetchServerRequest() {
   let userSongRequests = null;
   
   // fetch data from server
-  fetch(API_BASE+'/counts')
-  .then((response) =>
-    response.json())
-  .then((data) => {
-    userLogins = data.logins;
-    userSongRequests = data.song_requests;
-    // update dom with new data
-    loginsElement.innerText = userLogins;
-    songRequestsElement.innerText = userSongRequests;
-  })
-  .catch((error) => {
-    // update dom set data unavailable
-    loginsElement.innerText = "Unavailable";
-    songRequestsElement.innerText = "Unavailable";
-  });
+  if(isServerActive) {
+    fetch(API_BASE+'/counts')
+    .then((response) =>
+      response.json())
+    .then((data) => {
+      userLogins = data.logins;
+      userSongRequests = data.song_requests;
+      // update dom with new data
+      loginsElement.innerText = userLogins;
+      songRequestsElement.innerText = userSongRequests;
+    })
+    .catch((error) => {
+      // update dom set data unavailable
+      loginsElement.innerText = "Unavailable";
+      songRequestsElement.innerText = "Unavailable";
+    });
+  }
   
   //if (!userLogins && userLogins != 0)
    // return

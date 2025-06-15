@@ -44,25 +44,6 @@ if (navigator.storage && navigator.storage.persist) {
   console.warn("Failed to access browser storage, persistent storage unavailable.")
 }
 
-// Check available storage space
-if (navigator.storage && navigator.storage.estimate) {
-  const { usage, quota } = await navigator.storage.estimate();
-  const usageMB = usage / 1024 / 1024;
-  const quotaMB = quota / 1024 / 1024;
-  const quotaGB = quota / 1024 / 1024 / 1024;
-  const percentUsed = ((usage / quota) * 100).toFixed(2);
-  
-  const quotaDisplay = quotaGB >= 1 ? `${quotaGB.toFixed(2)} GB`:
-    `${quotaMB.toFixed(2)} MB`;
-  
-  console.log(`Used: ${usageMB.toFixed(2)} MB \nTotal: ${quotaDisplay}\nStorage Used: ${percentUsed}%`);
-  if (percentUsed >= 90)
-    alert("Warning: Your storage is nearly full! Please remove some songs.");
-} else {
-  console.warn("Failed to access browser storage, cannot calculate available storage space.");
-}
-
-
 
 const root = ReactDOM.createRoot(document.getElementById('root')); // Targeting #songs div
 root.render(

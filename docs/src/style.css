@@ -12,8 +12,8 @@
   100% {opacity: 1; transform: scaleX(1);}
 }
 @keyframes slideIn {
-  0% {opacity: 0;transform: translateY(-100px)}
-  20% {opacity: 0;}
+  0% {opacity: 001;transform: translateY(-50px)}
+  20% {opacity: 001;transform: translateY(-40px)}
   100% {opacity: 1;transform: translateY(0px)}
 }
 @keyframes fadeOut {
@@ -25,6 +25,15 @@
   0% {background-color: #000000;}  
   50% {background-color: #000000;}  
   100% {background-color: #000000b9;}  
+}
+@keyframes logoAnm {
+  from {transform: translate(-50%, -50%) translateY(0) scale(1);}
+  to {transform: translate(-50%, -50%) translateY(-15vh) scale(.5);}
+}
+@keyframes loadingSpanAnm {
+  0% {opacity: 0;}
+  80% {opacity: 0;}
+  100% {opacity: 1;}
 }
 
 @keyframes menu_opacity {
@@ -82,7 +91,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  background-image: url('images/white.jpeg');
+  background-image: url('./images/white.jpeg');
   background-color: black;
   background-size: cover;
   transition: all .5s ease, background-image .7s ease .3s;
@@ -331,7 +340,7 @@ body.dark .header {
 
 /* Dark Mode */
 body.dark {
-  background-image: url('images/dark.jpg');
+  background-image: url('./images/dark.jpg');
   background-color: black;
   color: #f4f4f9;
 }
@@ -352,40 +361,42 @@ body.dark .connection_status {
 /* Intro properties*/
 #intro {
   position: fixed;
-  top: 6vh;
+  top: 0;
   left: 0;
-  height: calc(100vh - 6vh);
+  height: 100vh;
   width: 100vw;
-  backdrop-filter: blur(3px);
   color: white;
   background-color: #000000;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border-radius: 1%;
-  transition: all .5s;
   z-index: 20;
-  animation: introBackgroundFade 5s ease;
 }
 
 #intro img {
-  opacity: .001;
-  height: auto;
   position: fixed;
-  top: 25%;
-  max-width: 90px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  max-width: 75vw;
+  height: auto;
+  will-change: transform;
 }
 
 #intro ul {
+  position: fixed;
+  list-style: none;
   padding: 20px;
+  margin: 0;
   font-size: 22px;
   font-family: Courier New;
   text-align: center;
 }
 
 #intro li {
-  display: none;
+  opacity: 0;
   margin: 10px;
 }
 
@@ -393,47 +404,31 @@ body.dark .connection_status {
   display: none;
   position: fixed;
   bottom: 120px;
-  font-family: cursive;
+  font-family: Courier New;
   font-size: 20px;
-  transform-origin: left;
 }
 
 /* when intro class is active*/
 #intro.active img {
-  opacity: 1;
-  animation: zoom 1s ease;
+  transform: translate(-50%, -50%) translateY(-15vh) scale(.5);
 }
 
 #intro.active li:nth-child(1) {
-  display: block;
-  animation: slideIn .5s ease;
+  opacity: 1;
+  animation: slideIn .3s ease;
 }
 #intro.active li:nth-child(2) {
-  display: block;
-  animation: slideIn 1s ease;
+  opacity: 1;
+  animation: slideIn .6s ease;
 }
 #intro.active li:nth-child(3) {
-  display: block;
-  animation: slideIn 1.5s ease;
+  opacity: 1;
+  animation: slideIn .9s ease;
 }
 
 #intro.active span {
   display: block;
-  animation: scaleX 1.5s ease;
-}
-
-/* deactivate intro */
-#intro.deactivate img {
-  opacity: 1;
-  animation: fadeOut 1.5s ease;
-}
-#intro.deactivate li {
-  display: block;
-  animation: fadeOut 1.5s ease;
-}
-#intro.deactivate span {
-  display: block;
-  animation: fadeOut 1.5s ease;
+  animation: loadingSpanAnm 1.5s ease;
 }
 
 .connection_status {

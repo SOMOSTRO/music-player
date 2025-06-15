@@ -1,17 +1,18 @@
-const CACHE_NAME = 'music-player-v1';
-const OFFLINE_PAGE = '/index.html'; // Fallback page
+const CACHE_NAME = 'music-player-v1.1.2';
+const OFFLINE_PAGE = './index.html'; // Fallback page
 const ESSENTIAL_FILES = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/images/icon-192x192.png',
-  '/images/icon-512x512.png',
-  '/images/dark.jpg',
-  '/images/white.jpeg',
-  '/images/moon.jpg',
-  '/images/sun.png',
-  '/src/style.css',
-  '/src/script.js',
+  './',
+  './index.html',
+  './manifest.json',
+  './images/icon-192x192.png',
+  './images/icon-512x512.png',
+  './images/dark.jpg',
+  './images/white.jpeg',
+  './images/moon.jpg',
+  './images/sun.png',
+  './images/github_logo.png',
+  './src/style.css',
+  './src/script.js',
   'bundle.js',
   'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap'
   //'https://cdn.jsdelivr.net/npm/eruda'
@@ -37,7 +38,18 @@ self.addEventListener('install', (event) => {
 
 self.addEventListener('activate', (event) => {
   console.log('Service Worker activated');
-  event.waitUntil(self.clients.claim()); // Take control of all clients
+  event.waitUntil(
+    caches.keys().then((cacheNames) => {
+      return Promise.all(
+        cacheNames.map((cache) => {
+          if (cache !== CACHE_NAME) {
+            console.log('Deleting old cache:', cache);
+            return caches.delete(cache);
+          }
+        })
+      );
+    }).then(() => self.clients.claim())
+  );
 });
 
 // Serve cached files or fallback to index.html
