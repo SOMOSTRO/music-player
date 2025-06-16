@@ -111,7 +111,6 @@ window.addEventListener('load',function () {
   // Show Intro
   // The intro animation will skip when server is connected too fast.
   if(introLogo) {
-    //intro.style.backgroundColor = '#000000b9';
     introLogo.style.animation = 'logoAnm .6s ease .4s';
     setTimeout( () => {
       intro?.classList.add("active");
@@ -156,8 +155,8 @@ window.scriptProperties = {
     }
     
     // close and clean-up intro
-    intro.style.animation = 'opacity .3s reverse';
     introLogo = null;
+    intro.style.animation = 'opacity .3s reverse';
     setTimeout( () => {
       intro.remove();
       intro = null;
