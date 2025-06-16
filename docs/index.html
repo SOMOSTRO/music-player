@@ -56,7 +56,6 @@
         .then(res => res.json())
         .then(data => {
           window.API_BASE = data.url;
-          localStorage.setItem("API_BASE", data.url);
         })
         .catch(err => {
           window.API_BASE = '';
@@ -179,22 +178,23 @@
         <dl>
          <h4>Reason:</h4>
           <dt>
-            •The app is hosted on a local server:
+            • The server is hosted via Cloudflare:
           </dt>
-          <dd>You need to be connected to the specific WiFi network where the server is running to access it.
+          <dd>Ensure that the app has a valid and reachable Cloudflare server URL (API_BASE).
             </dd>
           
           <dt>
-            •The server might not be active:
+            • The server might not be active:
           </dt>
           <dd>If the server isn't running, the app won't be able to connect.
           </dd>
          
          <h4>Solution:</h4>
           <dt>
-            •Connect to the correct WiFi network:
+            •Enter a valid server URL(API_BASE):
           </dt>
-          <dd>Make sure you're connected to the same network as the server.
+          <dd>Check if the app has a correct and accessible server URL. If not, set it manually:<br>
+            go to <i>Menu → API_BASE</i> and paste the URL in the input field.
           </dd>
           
           <dt>
@@ -203,6 +203,7 @@
           <dd>Ensure the server is active and accessible.
           </dd>
         </dl>
+        <b>If you have any doubt, please ask to the developer.</b>
       </div>
 
     

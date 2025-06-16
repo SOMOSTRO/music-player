@@ -34,11 +34,9 @@ const App = () => {
   const [text, setText] = useState("Click on any songs to play");
   const [useMarquee, setUseMarquee] = useState(false);
   const [play, setPlay] = useState(true);
-  
+  const [isServerActive, setIsServerActive] = useState(null);
   
   // references
-  const isServerActive = useRef(null);
-  
   const hasRefreshedFavourites = useRef(false);
   
   const audioPlayerRef = useRef(null);
@@ -58,13 +56,13 @@ const App = () => {
       .then((data) => {
         setAllSongs(data);
         setFilteredSongs(Object.values(data).flat());
-        isServerActive.current = true;
+        setIsServerActive(true)
         window.scriptProperties?.closeIntro?.(true);
         getSongsCount(data);
       })
       .catch((error) => {
         console.error("Error fetching songs")
-        isServerActive.current = false;
+        setIsServerActive(false)
         window.scriptProperties?.closeIntro?.(false);
       });
       
@@ -78,7 +76,7 @@ const App = () => {
   // re-render Virtualized List
   useEffect(() => {
     if(!hasRefreshedFavourites.current && favouriteSongs.length > 0) {
-      if(!isServerActive.current && isServerActive.current != null) {
+      if(!isServerActive && isServerActive != null) {
         requestAnimationFrame(() => {
           filterSongs("Favourite")
           //listRef.current?.recomputeRowHeights();
@@ -86,9 +84,10 @@ const App = () => {
           console.log("virtualized list refreshed for Favourites");
         });
       }
-      hasRefreshedFavourites.current = true;
+      if(isServerActive != null)
+        hasRefreshedFavourites.current = true;
     }
-  }, [favouriteSongs]);
+  }, [favouriteSongs, isServerActive]);
 
   // All functions
   const filterSongs = (category) => {

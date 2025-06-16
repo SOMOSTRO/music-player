@@ -196,7 +196,7 @@ preloadImages(imageUrls)
 apiBaseInput.addEventListener('keydown', function(event) {
   let inputValue = this.value.trim();
   if(event.key === 'Enter') {
-    if(inputValue.includes('eruda')) {
+    if(inputValue.toLowerCase().includes('eruda')) {
       if(isErudaActivated === true)
         return
       const script = document.createElement('script');
@@ -212,7 +212,7 @@ apiBaseInput.addEventListener('keydown', function(event) {
         }
       };
       
-      this.value = this.value.replace(/eruda/i, '')
+      this.value = this.value.replace(/eruda/gi, '')
       isErudaActivated = true;
       localStorage.setItem('isErudaActivated', true)
       return

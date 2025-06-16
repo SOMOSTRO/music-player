@@ -353,9 +353,6 @@ body.dark #theme-toggle img {
   animation: rotate 1s ease;
 }
 
-body.dark .connection_status {
-  background: linear-gradient(180deg, #000000f3, #000000bf, #0000000e);
-}
 
 
 /* Intro properties*/
@@ -434,10 +431,13 @@ body.dark .connection_status {
 .connection_status {
   display: none;
   position: fixed;
-  height: 80%
+  height: 100%
   width: 100%;
   padding: 5px;
-  background: linear-gradient(180deg, #ffffffeb, #ffffffac, #ffffff0e);
+  border-radius: 20px;
+  background-color: #ffffff8b;
+  color: black;
+  backdrop-filter: blur(5px);
   overflow-y: scroll;
   text-align: center;
   box-sizing: border-box;
