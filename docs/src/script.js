@@ -37,7 +37,7 @@ let isServerActive = false;
 let connectionStatus = document.querySelector(".connection_status");
 
 // set API_BASE = server URL
-const API_BASE = null;
+let API_BASE = null;
 
 // check storage accessible
 const isStorageAccessible = navigator.storage && navigator.storage.estimate;
