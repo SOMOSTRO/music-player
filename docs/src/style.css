@@ -170,6 +170,10 @@ body.dark .header {
 #theme-toggle img {
   animation: rotate .5s .2s ease;
 }
+.theme-toggle-img {
+  width: 28px;
+  border-radius: 50%;
+}
 
 
 .menu_container {
@@ -330,6 +334,9 @@ body.dark .header {
   border: 1px solid white;
   border-radius: 50%;
 }
+.version {
+  
+}
 .dev_name {
   font-family: cursive;
   font-weight: bold;
@@ -465,6 +472,7 @@ body.dark #theme-toggle img {
 }
 .connection_status p {
   font-family: Arial;
+  text-align: center;
 }
 .connection_status dl {
   width: 100%;

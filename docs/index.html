@@ -9,7 +9,11 @@
     
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" />
     
+    <link rel="preload" as="image" href="./images/icon-512x512.png">
+    <link rel="preload" as="image" href="./images/white.jpg">
+    <link rel="preload" as="image" href="./images/dark.jpg">
     <link rel="preload" as="image" href="./images/moon.jpg">
+    <link rel="preload" as="image" href="./images/sun.png">
     
     <meta name="theme-color" content="">
     
@@ -49,7 +53,7 @@
     const savedURL = localStorage.getItem("API_BASE") || '';
     if(window.location.hostname === "localhost") {
       window.API_BASE = "http://127.0.0.1:5000";
-    } else if (savedURL) {
+    } else if(savedURL) {
       window.API_BASE = savedURL;
     } else {
       fetch("https://SOMOSTRO.github.io/music-player/server.json", {cache: 'no-store'})
@@ -58,7 +62,6 @@
           window.API_BASE = data.url;
         })
         .catch(err => {
-          window.API_BASE = '';
           console.warn("Failed to fetch API_BASE", err);
         });
     }
@@ -146,8 +149,11 @@
       </section>
       <footer class="menu_inner_footer">
         <a href="https://github.com/SOMOSTRO" class="github_logo">
-          <img src="./images/github_logo.png" alt="Github_logo">
+          <img src="./images/github_logo.png" alt="Github logo" title="Github logo">
         </a>
+        <span class="version">
+          v1.1.5.1
+        </span>
         <span class="dev_name">SOMOSTRO</span>
       </footer>
     </div>
@@ -155,7 +161,7 @@
     <div class="menu_close_layer"></div>
     
     <div id="intro">
-      <img src="./images/icon-512x512.png" alt="Music Player Logo">
+      <img src="./images/icon-512x512.png" alt="Music Player Logo" title="APP LOGO">
       
       <ul>
         <li>Open Source</li>
