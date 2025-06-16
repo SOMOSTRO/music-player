@@ -54,19 +54,17 @@ const App = () => {
   useEffect(() => {
     const savedURL = localStorage.getItem("API_BASE") || '';
     if(window.location.hostname === "localhost") {
-      window.API_BASE = "http://127.0.0.1:5000";
       setAPI_BASE("http://127.0.0.1:5000");
     } else if(savedURL) {
-      window.API_BASE = savedURL;
       setAPI_BASE(savedURL);
     } else {
       fetch("https://SOMOSTRO.github.io/music-player/server.json", {cache: 'no-store'})
         .then(res => res.json())
         .then(data => {
-          window.API_BASE = data.url;
           setAPI_BASE(data.url);
         })
         .catch(err => {
+          setAPI_BASE("");
           console.warn("Failed to fetch API_BASE");
         });
     }
@@ -84,13 +82,13 @@ const App = () => {
         setAllSongs(data);
         setFilteredSongs(Object.values(data).flat());
         setIsServerActive(true)
-        window.scriptProperties?.closeIntro?.(true);
+        window.scriptProperties?.closeIntro?.(true, API_BASE);
         getSongsCount(data);
       })
       .catch((error) => {
         console.error("Error fetching songs")
         setIsServerActive(false)
-        window.scriptProperties?.closeIntro?.(false);
+        window.scriptProperties?.closeIntro?.(false, API_BASE);
       });
       
       // indexedDB setup

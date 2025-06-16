@@ -106,8 +106,6 @@ function handleMenuClick() {
 
 //Intro logic 
 window.addEventListener('load',function () {
-  // set API_BASE value from App.js
-  API_BASE = window.API_BASE || "";
   // Show Intro
   // The intro animation will skip when server is connected too fast.
   if(introLogo) {
@@ -121,6 +119,9 @@ window.addEventListener('load',function () {
 //window global function for intro
 window.scriptProperties = {
   closeIntro: function (serverConnected) {
+    // set API_BASE value from App.js
+    API_BASE = window.API_BASE || "";
+    
     isServerActive = true;
     const isDisplayedConnectionStatus = localStorage.getItem("isDisplayedConnectionStatus") || false
     
