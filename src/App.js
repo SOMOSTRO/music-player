@@ -64,7 +64,7 @@ const App = () => {
           setAPI_BASE(data.url);
         })
         .catch(err => {
-          setAPI_BASE("");
+          setAPI_BASE("http://127.0.0.1:5000");
           console.warn("Failed to fetch API_BASE");
         });
     }

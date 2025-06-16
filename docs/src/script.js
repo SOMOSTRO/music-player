@@ -118,9 +118,9 @@ window.addEventListener('load',function () {
 
 //window global function for intro
 window.scriptProperties = {
-  closeIntro: function (serverConnected) {
+  closeIntro: function (serverConnected, api_base) {
     // set API_BASE value from App.js
-    API_BASE = window.API_BASE || "";
+    API_BASE = api_base;
     
     isServerActive = true;
     const isDisplayedConnectionStatus = localStorage.getItem("isDisplayedConnectionStatus") || false
