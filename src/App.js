@@ -51,7 +51,7 @@ const App = () => {
 
   // fetch songs
   useEffect(() => {
-    fetch(API_BASE+'/songs')
+    fetch(API_BASE+'/songs', {cache: 'no-store'})
       .then((response) => response.json())
       .then((data) => {
         setAllSongs(data);
