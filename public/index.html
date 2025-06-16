@@ -52,7 +52,7 @@
     } else if (savedURL) {
       window.API_BASE = savedURL;
     } else {
-      fetch("https://SOMOSTRO.github.io/music-player/server.json")
+      fetch("https://SOMOSTRO.github.io/music-player/server.json", {cache: 'no-store'})
         .then(res => res.json())
         .then(data => {
           window.API_BASE = data.url;
@@ -203,7 +203,7 @@
           <dd>Ensure the server is active and accessible.
           </dd>
         </dl>
-        <b>If you have any doubt, please ask to the developer.</b>
+        <p>If you have any doubt, please ask to the developer.</p>
       </div>
 
     

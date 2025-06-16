@@ -465,6 +465,7 @@ body.dark #theme-toggle img {
 }
 .connection_status p {
   font-family: Arial;
+  text-align: center;
 }
 .connection_status dl {
   width: 100%;
