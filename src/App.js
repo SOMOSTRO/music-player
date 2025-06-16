@@ -12,9 +12,7 @@ import {
   getFavourite
 } from "./indexedDB";
 
-const API_BASE = window.location.hostname === "localhost" ? "http://127.0.0.1:5000" : window.API_BASE;
-
-const bodyElement = document.querySelector("body");
+const bodyElement = document.body;
 // audio player event listener var
 let audioPlayerIsSeeking = false;
 
@@ -22,6 +20,8 @@ let audioPlayerIsSeeking = false;
 let songsContainerHeight = 500;
 
 const App = () => {
+  const [API_BASE, setAPI_BASE] = useState("");
+  
   const [allSongs, setAllSongs] = useState({});
   const [filteredSongs, setFilteredSongs] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -38,6 +38,7 @@ const App = () => {
   
   // references
   const hasRefreshedFavourites = useRef(false);
+  const isFirstRender = useRef(true);
   
   const audioPlayerRef = useRef(null);
   const listRef = useRef(null); // Create ref for Virtualized List
@@ -47,10 +48,36 @@ const App = () => {
   // playingBar reference 
   const playingBarContainer = useRef(null);
   const playingBar = useRef(null);
-  const timeoutRef = useRef(null)
+  const timeoutRef = useRef(null);
 
+  // fetch API_BASE
+  useEffect(() => {
+    const savedURL = localStorage.getItem("API_BASE") || '';
+    if(window.location.hostname === "localhost") {
+      window.API_BASE = "http://127.0.0.1:5000";
+      setAPI_BASE("http://127.0.0.1:5000");
+    } else if(savedURL) {
+      window.API_BASE = savedURL;
+      setAPI_BASE(savedURL);
+    } else {
+      fetch("https://SOMOSTRO.github.io/music-player/server.json", {cache: 'no-store'})
+        .then(res => res.json())
+        .then(data => {
+          window.API_BASE = data.url;
+          setAPI_BASE(data.url);
+        })
+        .catch(err => {
+          console.warn("Failed to fetch API_BASE");
+        });
+    }
+  }, []);
+  
   // fetch songs
   useEffect(() => {
+    if(isFirstRender.current) {
+      isFirstRender.current = false;
+      return
+    }
     fetch(API_BASE+'/songs', {cache: 'no-store'})
       .then((response) => response.json())
       .then((data) => {
@@ -71,7 +98,7 @@ const App = () => {
         setFavouriteSongs(favs.map(item => item.song));
       });
       
-  }, []);
+  }, [API_BASE]);
 
   // re-render Virtualized List
   useEffect(() => {

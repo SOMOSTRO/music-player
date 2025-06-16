@@ -1,4 +1,4 @@
-const CACHE_NAME = 'music-player-v1.1.5.1';
+const CACHE_NAME = 'music-player-v1.1.6.1';
 const OFFLINE_PAGE = './index.html'; // Fallback page
 const ESSENTIAL_FILES = [
   './',

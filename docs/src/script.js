@@ -37,7 +37,7 @@ let isServerActive = false;
 let connectionStatus = document.querySelector(".connection_status");
 
 // set API_BASE = server URL
-const API_BASE = window.API_BASE || "";
+const API_BASE = null;
 
 // check storage accessible
 const isStorageAccessible = navigator.storage && navigator.storage.estimate;
@@ -47,11 +47,11 @@ if(!isStorageAccessible)
   console.warn("Failed to access browser storage, cannot calculate available storage space.");
 
 if(isDarkMode) {
-  themeToggle.innerHTML = "<img src=./images/sun.png width=28 style='border-radius:50%'>";
+  themeToggle.innerHTML = "<img src=./images/sun.png class=theme-toggle-img alt=image_sun>";
   document.body.classList.add('dark');
 }
 else {
-  themeToggle.innerHTML = "<img src=./images/moon.jpg width=28 style='border-radius:50%'>";
+  themeToggle.innerHTML = "<img src=./images/moon.jpg class=theme-toggle-img alt=image_moon>";
 }
 
 // pause all themeToggle animations
@@ -61,11 +61,11 @@ document.querySelector("#theme-toggle img").style.animationPlayState = 'paused';
 themeToggle.onclick = () => {
   if (document.body.classList.contains('dark')) {
     document.body.classList.remove('dark');
-    themeToggle.innerHTML = "<img src=./images/moon.jpg width=28 style='border-radius:50%'>";
+    themeToggle.innerHTML = "<img src=./images/moon.jpg class=theme-toggle-img alt=image_moon>";
     themeMetatag.content = "#041d44";
   } else {
     document.body.classList.add('dark');
-    themeToggle.innerHTML = "<img src=./images/sun.png width=28 style='border-radius:50%'>";
+    themeToggle.innerHTML = "<img src=./images/sun.png class=theme-toggle-img alt=image_sun>";
     themeMetatag.content = "#1b0832";
   }
 };
@@ -106,6 +106,8 @@ function handleMenuClick() {
 
 //Intro logic 
 window.addEventListener('load',function () {
+  // set API_BASE value from App.js
+  API_BASE = window.API_BASE || "";
   // Show Intro
   // The intro animation will skip when server is connected too fast.
   if(introLogo) {
@@ -177,18 +179,6 @@ function isStandalone() {
     (window.navigator.standalone === true) // iOS-specific check
   );
 }
-
-// Preload images function
-function preloadImages(urls) {
- urls.forEach(url => {
-  const img = new Image(); // Create a new Image object
-  img.src = url; // Set the src attribute to preload the image
-  });
-}
- 
-// preloadImages 
-const imageUrls = ['./images/white.jpeg', './images/dark.jpg', './images/moon.jpg', './images/sun.png', './images/icon-192x192.png'];
-preloadImages(imageUrls)
 
 
 // menu inner content functions

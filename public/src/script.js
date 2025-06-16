@@ -37,7 +37,7 @@ let isServerActive = false;
 let connectionStatus = document.querySelector(".connection_status");
 
 // set API_BASE = server URL
-const API_BASE = window.API_BASE || "";
+const API_BASE = null;
 
 // check storage accessible
 const isStorageAccessible = navigator.storage && navigator.storage.estimate;
@@ -106,6 +106,8 @@ function handleMenuClick() {
 
 //Intro logic 
 window.addEventListener('load',function () {
+  // set API_BASE value from App.js
+  API_BASE = window.API_BASE || "";
   // Show Intro
   // The intro animation will skip when server is connected too fast.
   if(introLogo) {
