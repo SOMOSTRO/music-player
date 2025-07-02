@@ -33,6 +33,8 @@ let introLogo = document.querySelector("#intro img");
 
 let isServerActive = false;
 
+let isErudaActivated = localStorage.getItem("isErudaActivated") || false
+
 // connection_status var
 let connectionStatus = document.querySelector(".connection_status");
 
