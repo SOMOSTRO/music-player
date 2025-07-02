@@ -16,9 +16,6 @@ const bodyElement = document.body;
 // audio player event listener var
 let audioPlayerIsSeeking = false;
 
-// songsContainer var
-let songsContainerHeight = 500;
-
 const App = () => {
   const [API_BASE, setAPI_BASE] = useState("");
   
@@ -30,6 +27,9 @@ const App = () => {
   // favourite songs states
   const [favouriteSongs, setFavouriteSongs] = useState([]);
 
+  // songsContainer var
+  const [songsContainerHeight, setSongsContainerHeight] = useState(0);
+
   // playing bar states
   const [text, setText] = useState("Click on any songs to play");
   const [useMarquee, setUseMarquee] = useState(false);
@@ -37,7 +37,6 @@ const App = () => {
   const [isServerActive, setIsServerActive] = useState(null);
   
   // references
-  const hasRefreshedFavourites = useRef(false);
   const isFirstRender = useRef(true);
   
   const audioPlayerRef = useRef(null);
@@ -64,7 +63,8 @@ const App = () => {
           setAPI_BASE(data.url);
         })
         .catch(err => {
-          setAPI_BASE("http://127.0.0.1:5000");
+          setIsServerActive(false)
+          window.scriptProperties?.closeIntro?.(false);
           console.warn("Failed to fetch API_BASE");
         });
     }
@@ -72,8 +72,7 @@ const App = () => {
   
   // fetch songs
   useEffect(() => {
-    if(isFirstRender.current) {
-      isFirstRender.current = false;
+    if(!API_BASE) {
       return
     }
     fetch(API_BASE+'/songs', {cache: 'no-store'})
@@ -88,31 +87,28 @@ const App = () => {
       .catch((error) => {
         console.error("Error fetching songs")
         setIsServerActive(false)
-        window.scriptProperties?.closeIntro?.(false, API_BASE);
+        window.scriptProperties?.closeIntro?.(false);
       });
-      
-      // indexedDB setup
-      getAllFavourites().then((favs) => {
-        setFavouriteSongs(favs.map(item => item.song));
-      });
-      
   }, [API_BASE]);
 
-  // re-render Virtualized List
+  // re-render Virtualized List for Fav
   useEffect(() => {
-    if(!hasRefreshedFavourites.current && favouriteSongs.length > 0) {
-      if(!isServerActive && isServerActive != null) {
-        requestAnimationFrame(() => {
-          filterSongs("Favourite")
-          //listRef.current?.recomputeRowHeights();
-          //listRef.current?.scrollToRow(0);
-          console.log("virtualized list refreshed for Favourites");
-        });
-      }
-      if(isServerActive != null)
-        hasRefreshedFavourites.current = true;
+    if(isServerActive === null || isServerActive)
+      return;
+    
+    const start = performance.now();
+    loadFavourites();
+    const end = performance.now();
+    console.log(`loadFavourites() Execution time: ${end - start} ms`);
+    if(favouriteSongs.length > 0) {
+      requestAnimationFrame(() => {
+        filterSongs("Favourite")
+        //listRef.current?.recomputeRowHeights();
+        //listRef.current?.scrollToRow(0);
+        console.log("virtualized list refreshed for Favourites");
+      });
     }
-  }, [favouriteSongs, isServerActive]);
+  }, [isServerActive]);
 
   // All functions
   const filterSongs = (category) => {
@@ -246,6 +242,16 @@ const App = () => {
     await removeFavourite(song);
     setFavouriteSongs((prev) => prev.filter((s) => s !== song));
   };
+  
+  // retrieve fav songs list from indexedDB
+  const loadFavourites = async () => {
+    try {
+      const favs = await getAllFavourites();
+      setFavouriteSongs(favs.map(item => item.song));
+    } catch (error) {
+      console.error("Failed to load favourites:", error);
+    }
+};
 
   const displaySongName = (song) => {
     const songName = getSongName(song);
@@ -318,7 +324,7 @@ const App = () => {
   
   useEffect( () => {
     const updateSongsContainerHeight = () => {
-      songsContainerHeight = songsContainer.current.offsetHeight;
+      setSongsContainerHeight(songsContainer.current.offsetHeight);
       console.log("songsContainerHeight", songsContainerHeight);
     };
     
@@ -350,13 +356,23 @@ const App = () => {
   
       audioPlayerIsSeeking = false;
     };
+    
+    // after window load display audio element
+    const handleWindowLoad = () => {
+      audio.style.display = 'block';
+      console.log("audio element added")
+    }
   
     audio.addEventListener("seeking", handleSeeking);
     audio.addEventListener("seeked", handleSeeked);
+    
+    // event listener for displaying audio element after window load
+    window.addEventListener("load", handleWindowLoad);
   
     return () => {
       audio.removeEventListener("seeking", handleSeeking);
       audio.removeEventListener("seeked", handleSeeked);
+      window.removeEventListener("load", handleWindowLoad);
     };
   }, []);
 
@@ -451,7 +467,7 @@ const App = () => {
               rowCount={filteredSongs.length}
               rowHeight={70} // Adjust row height
               rowRenderer={rowRenderer}
-              // overscanRowCount={2}
+              // overscanRowCount={10}
               onScroll={() => {removeAnimation();}}
             />
           )}

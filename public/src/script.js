@@ -118,11 +118,11 @@ window.addEventListener('load',function () {
 
 //window global function for intro
 window.scriptProperties = {
-  closeIntro: function (serverConnected, api_base) {
+  closeIntro: function (serverConnected, api_base = "") {
     // set API_BASE value from App.js
     API_BASE = api_base;
     
-    isServerActive = true;
+    isServerActive = serverConnected;
     const isDisplayedConnectionStatus = localStorage.getItem("isDisplayedConnectionStatus") || false
     
     // update theme-color for pwa
@@ -157,11 +157,12 @@ window.scriptProperties = {
     
     // close and clean-up intro
     introLogo = null;
-    intro.style.animation = 'opacity .3s reverse';
+    
+    intro.style.animation = 'opacity .35s reverse';
     setTimeout( () => {
       intro.remove();
       intro = null;
-    },300);
+    },350);
   }
 };
 

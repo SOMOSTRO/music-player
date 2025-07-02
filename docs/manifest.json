@@ -1,27 +1,27 @@
 {
   "short_name": "Music Player",
-  "name": "Music Player React App",
-  "description": "A high-quality music player with over 500+ songs, offering an immersive audio experience with playlists, themes, and more.",
+  "name": "Music Player PWA",
+  "description": "A high-quality music player with over 900+ songs, offering an immersive audio experience with playlists, themes, and more.",
   "icons": [
     {
-      "src": "https://SOMOSTRO.github.io/music-player/images/icon-192x192.png",
+      "src": "./images/icon-192x192.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "https://SOMOSTRO.github.io/music-player/images/icon-512x512.png",
+      "src": "./images/icon-512x512.png",
       "type": "image/png",
       "sizes": "512x512"
     }
   ],
   "screenshots": [
     {
-      "src": "https://SOMOSTRO.github.io/music-player/images/icon-192x192.png",
+      "src": "./images/icon-192x192.png",
       "type": "image/png",
       "sizes": "1080x1920"
     },
     {
-      "src": "https://SOMOSTRO.github.io/music-player/images/icon-192x192.png",
+      "src": "./images/icon-192x192.png",
       "type": "image/png",
       "sizes": "1080x1920"
     }

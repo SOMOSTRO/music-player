@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined&display=swap" />
     
     <link rel="preload" as="image" href="./images/icon-512x512.png">
-    <link rel="preload" as="image" href="./images/white.jpg">
+    <link rel="preload" as="image" href="./images/white.jpeg">
     <link rel="preload" as="image" href="./images/dark.jpg">
     <link rel="preload" as="image" href="./images/moon.jpg">
     <link rel="preload" as="image" href="./images/sun.png">
@@ -47,25 +47,6 @@
       width: 100%;
     }
   </style>
-  
-  <!-- Initializing Eruda Logic -->
-  <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
-  <script>
-    // intialize eruda if allowed
-    let isErudaActivated = false;
-    
-    if(localStorage.getItem('isErudaActivated') || false) {
-      try {
-        eruda.init();
-        console.log("Eruda Activated");
-      }
-      catch (error) {
-        console.log("Eruda is unavailable");
-      }
-      
-      isErudaActivated = true;
-    }
-  </script>
 </head>
 <body>
     <!-- Music Player Section -->
@@ -110,8 +91,8 @@
         <div class="server_request_container menu_content_containers">
           <h4>Server Request (count)</h4>
           <ul>
-            <li>No of Logins: <span id="loginsElement">Loading...</span></li>
-            <li>Song Requests: <span id="songRequestsElement">Loading...</span></li>
+            <li>No of Logins: <span id="loginsElement">Unavailable</span></li>
+            <li>Song Requests: <span id="songRequestsElement">Unavailable</span></li>
           </ul>
         </div>
         <hr>
@@ -133,7 +114,7 @@
           <img src="./images/github_logo.png" alt="Github logo" title="Github logo">
         </a>
         <span class="version">
-          v1.1.6.6
+          v1.1.7
         </span>
         <span class="dev_name">SOMOSTRO</span>
       </footer>
@@ -142,7 +123,7 @@
     <div class="menu_close_layer"></div>
     
     <div id="intro">
-      <img src="./images/icon-512x512.png" alt="Music Player Logo" title="APP LOGO">
+      <img src="./images/icon-512x512.png" alt="Music Player Logo" title="APP LOGO" width="240">
       
       <ul>
         <li>Open Source</li>
@@ -193,6 +174,14 @@
         <p>If you have any doubt, please ask to the developer.</p>
       </div>
 
+<!-- Initializing Eruda Logic -->
+<script>
+  // intialize eruda if allowed
+  if(localStorage.getItem('isErudaActivated')) {
+    (function () {var script=document.createElement('script');script.src="//cdn.jsdelivr.net/npm/eruda";document.body.appendChild(script); script.onload = function () { eruda.init() } })();
+    console.log("Eruda Activated");
+  }
+</script>
     
 <script src="bundle.js"></script>
     
