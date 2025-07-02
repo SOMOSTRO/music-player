@@ -37,7 +37,7 @@ const App = () => {
   const [isServerActive, setIsServerActive] = useState(null);
   
   // references
-  const isFirstRender = useRef(true);
+  const hasRefreshedFav = useRef(false);
   
   const audioPlayerRef = useRef(null);
   const listRef = useRef(null); // Create ref for Virtualized List
@@ -91,24 +91,30 @@ const App = () => {
       });
   }, [API_BASE]);
 
-  // re-render Virtualized List for Fav
+  // load favouriteSongs if isServerActive == false
   useEffect(() => {
     if(isServerActive === null || isServerActive)
       return;
     
     const start = performance.now();
-    loadFavourites();
-    const end = performance.now();
-    console.log(`loadFavourites() Execution time: ${end - start} ms`);
-    requestAnimationFrame(() => {
-      if(favouriteSongs.length > 0) {
-        filterSongs("Favourite")
-        //listRef.current?.recomputeRowHeights();
-        //listRef.current?.scrollToRow(0);
-        console.log("virtualized list refreshed for Favourites");
-        }
+    loadFavourites().then( () => {
+      const end = performance.now();
+      console.log(`loadFavourites() Execution time: ${end - start} ms`);
     });
   }, [isServerActive]);
+  
+  // re-render Virtualized List for Fav
+  useEffect(() => {
+    if (!hasRefreshedFav.current && favouriteSongs.length > 0) {
+      hasRefreshedFav.current = true;
+      requestAnimationFrame(() => {
+        filterSongs("Favourite");
+        // listRef.current?.recomputeRowHeights();
+        // listRef.current?.scrollToRow(0);
+        console.log("virtualized list refreshed for Favourites");
+      });
+    }
+  }, [favouriteSongs]);
 
   // All functions
   const filterSongs = (category) => {
