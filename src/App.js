@@ -100,14 +100,14 @@ const App = () => {
     loadFavourites();
     const end = performance.now();
     console.log(`loadFavourites() Execution time: ${end - start} ms`);
-    if(favouriteSongs.length > 0) {
-      requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      if(favouriteSongs.length > 0) {
         filterSongs("Favourite")
         //listRef.current?.recomputeRowHeights();
         //listRef.current?.scrollToRow(0);
         console.log("virtualized list refreshed for Favourites");
-      });
-    }
+        }
+    });
   }, [isServerActive]);
 
   // All functions

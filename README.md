@@ -10,12 +10,12 @@ A **lightweight, fast, and offline-ready** Progressive Web App (PWA) Music Playe
 - Blazing fast performance with minimal bundle size
 - Offline access via Service Worker and IndexedDB
 - Fully installable on Android (PWA compliant)
-- Categorized song listing with virtual scrolling (`react-virtualized`, `react-window`)
+- Categorized song listing with virtual scrolling (`react-virtualized`)
 - Smooth UI built using React 18 and Webpack 5
 - CSS modules for scoped styling
 
 ### 📡 Server Features (Backend API – Not Included)
-- 800+ high-quality songs available locally
+- 900+ high-quality songs available locally
 - Songs categorized by language (English, Hindi, Malayalam, Phonk)
 - Fast API for dynamic song data
 - Popular and recent songs highlighted
