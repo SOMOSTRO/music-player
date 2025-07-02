@@ -57,7 +57,7 @@ const App = () => {
     } else if(savedURL) {
       setAPI_BASE(savedURL);
     } else {
-      fetch("https://SOMOSTRO.github.io/music-player/server.json", {cache: 'no-store'})
+      fetch("https://SOMOSTRO.github.io/HOSTED/MP_server_url.json", {cache: 'no-store'})
         .then(res => res.json())
         .then(data => {
           setAPI_BASE(data.url);
@@ -91,21 +91,28 @@ const App = () => {
       });
   }, [API_BASE]);
 
-  // load favouriteSongs if isServerActive == false
+  // load favouriteSongs
   useEffect(() => {
-    if(isServerActive === null || isServerActive)
-      return;
-    
     const start = performance.now();
     loadFavourites().then( () => {
       const end = performance.now();
       console.log(`loadFavourites() Execution time: ${end - start} ms`);
     });
-  }, [isServerActive]);
+  }, []);
   
   // re-render Virtualized List for Fav
   useEffect(() => {
-    if (!hasRefreshedFav.current && favouriteSongs.length > 0) {
+    if(hasRefreshedFav.current)
+      return
+    
+    if(isServerActive === null)
+      return;
+    if(isServerActive) {
+      hasRefreshedFav.current = true;
+      return
+    }
+      
+    if (favouriteSongs.length > 0) {
       hasRefreshedFav.current = true;
       requestAnimationFrame(() => {
         filterSongs("Favourite");
@@ -114,7 +121,7 @@ const App = () => {
         console.log("virtualized list refreshed for Favourites");
       });
     }
-  }, [favouriteSongs]);
+  }, [favouriteSongs, isServerActive]);
 
   // All functions
   const filterSongs = (category) => {

@@ -181,6 +181,30 @@ function isStandalone() {
   );
 }
 
+// function used for deleting service-worker and it all cached files
+function clearServiceWorkerAndCaches() {
+  // Unregister all service workers
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.getRegistrations().then((registrations) => {
+      registrations.forEach((registration) => {
+        registration.unregister().then((success) => {
+          console.log(`✅ Service Worker unregistered: ${success}`);
+        });
+      });
+    });
+  }
+
+  // Delete all CacheStorage entries
+  if ('caches' in window) {
+    caches.keys().then((cacheNames) => {
+      cacheNames.forEach((cacheName) => {
+        caches.delete(cacheName).then((success) => {
+          console.log(`🧹 Cache deleted: ${cacheName} → ${success}`);
+        });
+      });
+    });
+  }
+}
 
 // menu inner content functions
 // apiBaseInput function
@@ -208,10 +232,16 @@ apiBaseInput.addEventListener('keydown', function(event) {
       localStorage.setItem('isErudaActivated', true)
       return
     }
+    else if(inputValue.toLowerCase().includes('delete service-worker')) {
+      clearServiceWorkerAndCaches();
+    }
+    else if(inputValue.toLowerCase().includes('delete localStorage')) {
+      localStorage.clear();
+    }
     
     // if input empty reset API_BASE to fetch actual URL
     if(!inputValue) {
-      localStorage.setItem("API_BASE", "");
+      localStorage.removeItem("API_BASE");
       location.reload();
     }
       
