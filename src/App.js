@@ -57,7 +57,7 @@ const App = () => {
     } else if(savedURL) {
       setAPI_BASE(savedURL);
     } else {
-      fetch("https://SOMOSTRO.github.io/HOSTED/MP_server_url.json", {cache: 'no-store'})
+      fetch("https://SOMOSTRO.github.io/Hosted/MP_server_url.json", {cache: 'no-store'})
         .then(res => res.json())
         .then(data => {
           setAPI_BASE(data.url);

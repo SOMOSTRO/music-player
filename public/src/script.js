@@ -234,9 +234,11 @@ apiBaseInput.addEventListener('keydown', function(event) {
     }
     else if(inputValue.toLowerCase().includes('delete service-worker')) {
       clearServiceWorkerAndCaches();
+      return;
     }
-    else if(inputValue.toLowerCase().includes('delete localStorage')) {
+    else if(inputValue.toLowerCase().includes('delete localstorage')) {
       localStorage.clear();
+      return;
     }
     
     // if input empty reset API_BASE to fetch actual URL
