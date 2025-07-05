@@ -48,28 +48,50 @@ const isStorageAccessible = navigator.storage && navigator.storage.estimate;
 if(!isStorageAccessible)
   console.warn("Failed to access browser storage, cannot calculate available storage space.");
 
-if(isDarkMode) {
-  themeToggle.innerHTML = "<img src=./images/sun.png class=theme-toggle-img alt=image_sun>";
-  document.body.classList.add('dark');
+// Set themeToggle img for first render
+function renderThemeToggleImg() {
+  const img = document.createElement("img");
+  img.className = "theme-toggle-img";
+  
+  if(isDarkMode) {
+    img.alt = "image sun";
+    img.src = "./images/sun.png";
+    document.body.classList.add('dark');
+  }
+  else {
+    img.alt = "image moon";
+    img.src = "./images/moon.jpg";
+  }
+  
+  // render img
+  themeToggle.replaceChildren(img);
 }
-else {
-  themeToggle.innerHTML = "<img src=./images/moon.jpg class=theme-toggle-img alt=image_moon>";
-}
+renderThemeToggleImg();
 
 // pause all themeToggle animations
 themeToggle.style.animationPlayState = 'paused';
 document.querySelector("#theme-toggle img").style.animationPlayState = 'paused';
 
 themeToggle.onclick = () => {
+  const img = document.createElement("img");
+  img.className = "theme-toggle-img";
+  
   if (document.body.classList.contains('dark')) {
+    img.alt = "image moon";
+    img.src = "./images/moon.jpg";
+    
     document.body.classList.remove('dark');
-    themeToggle.innerHTML = "<img src=./images/moon.jpg class=theme-toggle-img alt=image_moon>";
     themeMetatag.content = "#041d44";
   } else {
+    img.alt = "image sun";
+    img.src = "./images/sun.png";
+    
     document.body.classList.add('dark');
-    themeToggle.innerHTML = "<img src=./images/sun.png class=theme-toggle-img alt=image_sun>";
     themeMetatag.content = "#1b0832";
   }
+  
+  // render img
+  themeToggle.replaceChildren(img);
 };
 
 // menu handler function
@@ -274,30 +296,35 @@ async function checkStorage() {
     `${quotaMB.toFixed(2)} MB`;
   
   // storageAvailable
-  storageAvailable.innerText = quotaDisplay;
-  if (quotaGB > 20)
+  if(storageAvailable.textContent !== quotaDisplay)
+    storageAvailable.textContent = quotaDisplay;
+  
+  if (quotaGB > 50)
     storageAvailable.classList.add('highlight_green');
-  else if (quotaGB > 5)
+  else if (quotaGB > 20)
     storageAvailable.classList.add('highlight_yellow');
   else
     storageAvailable.classList.add('highlight_red');
   
   // storageUsed
-  storageUsed.innerText = usageMB.toFixed(2) + ' MB';
+  if(storageUsed.textContent !== usageMB.toFixed(2) + ' MB')
+    storageUsed.textContent = usageMB.toFixed(2) + ' MB';
   
   // storagePercentUsed
-  storagePercentUsed.innerText = percentUsed + '%';
-  if (percentUsed > 80)
+  if(storagePercentUsed.textContent !== percentUsed + '%')
+    storagePercentUsed.textContent = percentUsed + '%';
+  
+  if (percentUsed > 50)
     storagePercentUsed.classList.add('highlight_red');
-  else if (percentUsed > 50)
+  else if (percentUsed > 10)
     storagePercentUsed.classList.add('highlight_yellow');
   else
     storagePercentUsed.classList.add('highlight_green');
   
-  if (percentUsed >= 90 && !isPercentUsedWarningDisplayed) {
+  if (percentUsed >= 50 && !isPercentUsedWarningDisplayed) {
     const element = document.createElement('span')
     element.classList.add('storage_warning_element');
-    element.innerText = "Warning: Your storage is nearly full! Please remove some songs.";
+    element.textContent = "Warning: You are using too much storage. Please remove some songs to free up space.";
     document.querySelector('.storage_container').appendChild(element);
     isPercentUsedWarningDisplayed = true;
   }
@@ -317,13 +344,17 @@ function fetchServerRequest() {
       userLogins = data.logins;
       userSongRequests = data.song_requests;
       // update dom with new data
-      loginsElement.innerText = userLogins;
-      songRequestsElement.innerText = userSongRequests;
+      if(loginsElement.textContent !== userLogins)
+        loginsElement.textContent = userLogins;
+      if(songRequestsElement.textContent !== userSongRequests)
+        songRequestsElement.textContent = userSongRequests;
     })
     .catch((error) => {
       // update dom set data unavailable
-      loginsElement.innerText = "Unavailable";
-      songRequestsElement.innerText = "Unavailable";
+      if(loginsElement.textContent !== "Unavailable") {
+        loginsElement.textContent = "Unavailable";
+        songRequestsElement.textContent = "Unavailable";
+      }
     });
   }
   
