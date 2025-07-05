@@ -12,14 +12,16 @@ import {
   getFavourite
 } from "./indexedDB";
 
+// Global vars
 const bodyElement = document.body;
+
 // audio player event listener var
 let audioPlayerIsSeeking = false;
 
 const App = () => {
+  // states variables
   const [API_BASE, setAPI_BASE] = useState("");
   
-  const [allSongs, setAllSongs] = useState({});
   const [filteredSongs, setFilteredSongs] = useState([]);
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [currentSong, setCurrentSong] = useState(null);
@@ -34,10 +36,15 @@ const App = () => {
   const [text, setText] = useState("Click on any songs to play");
   const [useMarquee, setUseMarquee] = useState(false);
   const [play, setPlay] = useState(true);
+  
   const [isServerActive, setIsServerActive] = useState(null);
   
   // references
+  // allSongs object ref
+  const allSongsRef = useRef({});
+  
   const hasRefreshedFav = useRef(false);
+  const isFirstCallForFilterSongs = useRef(true);
   
   const audioPlayerRef = useRef(null);
   const listRef = useRef(null); // Create ref for Virtualized List
@@ -78,8 +85,9 @@ const App = () => {
     fetch(API_BASE+'/songs', {cache: 'no-store'})
       .then((response) => response.json())
       .then((data) => {
-        setAllSongs(data);
-        setFilteredSongs(Object.values(data).flat());
+        allSongsRef.current = data;
+        // setFilteredSongs(Object.values(data).flat());
+        filterSongs("English");
         setIsServerActive(true)
         window.scriptProperties?.closeIntro?.(true, API_BASE);
         getSongsCount(data);
@@ -115,20 +123,28 @@ const App = () => {
     if (favouriteSongs.length > 0) {
       hasRefreshedFav.current = true;
       requestAnimationFrame(() => {
-        filterSongs("Favourite");
-        // listRef.current?.recomputeRowHeights();
-        // listRef.current?.scrollToRow(0);
-        console.log("virtualized list refreshed for Favourites");
-      });
+          filterSongs("Favourite");
+          // listRef.current?.recomputeRowHeights();
+          // listRef.current?.scrollToRow(0);
+          console.log("virtualized list refreshed for Favourites");
+        });
     }
   }, [favouriteSongs, isServerActive]);
 
   // All functions
   const filterSongs = (category) => {
+    const allSongs = allSongsRef.current;
+    
     if (category === "Favourite") {   setFilteredSongs(favouriteSongs);
     } else if (category === "all") {   setFilteredSongs(Object.values(allSongs).flat()); } else {   setFilteredSongs(allSongs[category] || []); }
     
     setSelectedCategory(category);
+    
+    // skip the animation on first call
+    if(isFirstCallForFilterSongs.current){
+      isFirstCallForFilterSongs.current = false;
+      return;
+    }
     
     // Reset scroll position using React Virtualized
     listRef.current?.scrollToPosition(0);
@@ -151,6 +167,8 @@ const App = () => {
   };
   
   const playSong = (song) => {
+    const allSongs = allSongsRef.current;
+    
     if (song == currentSong || audioPlayerRef.current.src.includes(encodeURIComponent(song))) {
       audioPlayerRef.current.currentTime = 0;
       if(audioPlayerRef.current.paused)
@@ -227,6 +245,8 @@ const App = () => {
 
   // indexedDB helper functions
   const addToFavourites = async (song) => {
+    const allSongs = allSongsRef.current;
+    
     const category = Object.keys(allSongs).find((cat) => allSongs[cat].includes(song));
     const songUrl = `${API_BASE}/music/${category}/${encodeURIComponent(song)}`;
   
@@ -461,7 +481,7 @@ const App = () => {
     <div className="container">
       {/* Category Buttons */}
       <div className="categories">
-        {[...Object.keys(allSongs), 'Favourite'].map((category) => (
+        {[...Object.keys(allSongsRef.current), 'Favourite'].map((category) => (
           <button key={category} className={selectedCategory === category ? "buttons_style" : ""} onClick={() => filterSongs(category)}>
             {category == "Favourite" ? "💜Fav" : category}
           </button>

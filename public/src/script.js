@@ -33,6 +33,8 @@ let introLogo = document.querySelector("#intro img");
 
 let isServerActive = false;
 
+let isErudaActivated = localStorage.getItem("isErudaActivated") || false
+
 // connection_status var
 let connectionStatus = document.querySelector(".connection_status");
 
@@ -158,11 +160,11 @@ window.scriptProperties = {
     // close and clean-up intro
     introLogo = null;
     
-    intro.style.animation = 'opacity .35s reverse';
+    intro.style.animation = 'opacity .3s reverse';
     setTimeout( () => {
       intro.remove();
       intro = null;
-    },350);
+    },300);
   }
 };
 
@@ -188,7 +190,7 @@ function clearServiceWorkerAndCaches() {
     navigator.serviceWorker.getRegistrations().then((registrations) => {
       registrations.forEach((registration) => {
         registration.unregister().then((success) => {
-          console.log(`✅ Service Worker unregistered: ${success}`);
+          console.log(`Service Worker unregistered: ${success}`);
         });
       });
     });
@@ -199,7 +201,7 @@ function clearServiceWorkerAndCaches() {
     caches.keys().then((cacheNames) => {
       cacheNames.forEach((cacheName) => {
         caches.delete(cacheName).then((success) => {
-          console.log(`🧹 Cache deleted: ${cacheName} → ${success}`);
+          console.log(`Cache deleted: ${cacheName} → ${success}`);
         });
       });
     });
@@ -234,10 +236,12 @@ apiBaseInput.addEventListener('keydown', function(event) {
     }
     else if(inputValue.toLowerCase().includes('delete service-worker')) {
       clearServiceWorkerAndCaches();
+      this.value = this.value.replace(/delete service-worker/gi, '')
       return;
     }
     else if(inputValue.toLowerCase().includes('delete localstorage')) {
       localStorage.clear();
+      this.value = this.value.replace(/delete localstorage/gi, '')
       return;
     }
     
