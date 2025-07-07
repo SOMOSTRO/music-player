@@ -76,6 +76,18 @@
   }
 }
 
+@keyframes introFadeOut {
+  0% {
+    opacity: 1;
+  }
+  60% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
 :root {
   --purple_theme_color: #1b0832;
   --purple_theme_faded_color: #300e58;

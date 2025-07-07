@@ -182,7 +182,7 @@ window.scriptProperties = {
     // close and clean-up intro
     introLogo = null;
     
-    intro.style.animation = 'opacity .3s reverse';
+    intro.style.animation = 'introFadeOut .5s ease';
     setTimeout( () => {
       intro.remove();
       intro = null;

@@ -44,7 +44,6 @@ const App = () => {
   const allSongsRef = useRef({});
   
   const hasRefreshedFav = useRef(false);
-  const isFirstCallForFilterSongs = useRef(true);
   
   const audioPlayerRef = useRef(null);
   const listRef = useRef(null); // Create ref for Virtualized List
@@ -87,7 +86,7 @@ const App = () => {
       .then((data) => {
         allSongsRef.current = data;
         // setFilteredSongs(Object.values(data).flat());
-        filterSongs("English");
+        filterSongs("English", false);
         setIsServerActive(true)
         window.scriptProperties?.closeIntro?.(true, API_BASE);
         getSongsCount(data);
@@ -123,7 +122,7 @@ const App = () => {
     if (favouriteSongs.length > 0) {
       hasRefreshedFav.current = true;
       requestAnimationFrame(() => {
-          filterSongs("Favourite");
+          filterSongs("Favourite", false);
           // listRef.current?.recomputeRowHeights();
           // listRef.current?.scrollToRow(0);
           console.log("virtualized list refreshed for Favourites");
@@ -132,7 +131,7 @@ const App = () => {
   }, [favouriteSongs, isServerActive]);
 
   // All functions
-  const filterSongs = (category) => {
+  const filterSongs = (category, isAnimationEnabled = true) => {
     const allSongs = allSongsRef.current;
     
     if (category === "Favourite") {   setFilteredSongs(favouriteSongs);
@@ -140,20 +139,17 @@ const App = () => {
     
     setSelectedCategory(category);
     
-    // skip the animation on first call
-    if(isFirstCallForFilterSongs.current){
-      isFirstCallForFilterSongs.current = false;
-      return;
+    // animate if true
+    if(isAnimationEnabled) {
+      // Reset scroll position using React Virtualized
+      listRef.current?.scrollToPosition(0);
+      
+      bodyElement?.classList.remove("category");
+      void bodyElement?.offsetHeight; // Force reflow to restart animation
+      requestAnimationFrame(() => {
+        bodyElement?.classList.add("category");
+      });
     }
-    
-    // Reset scroll position using React Virtualized
-    listRef.current?.scrollToPosition(0);
-    
-    bodyElement?.classList.remove("category");
-    void bodyElement?.offsetHeight; // Force reflow to restart animation
-    requestAnimationFrame(() => {
-      bodyElement?.classList.add("category");
-    });
   };
 
   const updateMediaMetadata = (song) => {
