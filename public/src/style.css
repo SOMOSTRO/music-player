@@ -13,7 +13,7 @@
 }
 @keyframes slideIn {
   0% {opacity: 001;transform: translateY(-50px)}
-  20% {opacity: 001;transform: translateY(-40px)}
+  20% {opacity: 001;transform: translateY(-50px)}
   100% {opacity: 1;transform: translateY(0px)}
 }
 @keyframes fadeOut {
@@ -28,7 +28,7 @@
 }
 @keyframes logoAnm {
   from {transform: translate(-50%, -50%) translateY(0) scale(1);}
-  to {transform: translate(-50%, -50%) translateY(-15vh) scale(.5);}
+  to {transform: translate(-50%, -50%) translateY(-13vh) scale(.5);}
 }
 @keyframes loadingSpanAnm {
   0% {opacity: 0;}
@@ -53,7 +53,7 @@
 }
 @keyframes menu_closing {
   0% {transform: translateX(0px);}
-  100% {transform: translateX(250px);}
+  100% {transform: translateX(150px);}
 }
 
 @keyframes holographic {
@@ -218,7 +218,7 @@ body.dark .header {
   z-index: 6;
 }
 .set_animation {
-  animation: menu_opacity_reverse .3s ease-in, menu_closing .3s linear;
+  animation: menu_opacity_reverse .2s ease-out, menu_closing .2s linear;
 }
 .menu_opened .menu_inner_container {
   transform: translateX(0);
@@ -426,7 +426,7 @@ body.dark #theme-toggle img {
 
 /* when intro class is active*/
 #intro.active img {
-  transform: translate(-50%, -50%) translateY(-15vh) scale(.5);
+  transform: translate(-50%, -50%) translateY(-13vh) scale(.5);
 }
 
 #intro.active li:nth-child(1) {
