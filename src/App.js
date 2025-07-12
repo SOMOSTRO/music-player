@@ -76,7 +76,7 @@ const App = () => {
     }
   }, []);
   
-  // fetch songs
+  // fetch songs List
   useEffect(() => {
     if(!API_BASE) {
       return
